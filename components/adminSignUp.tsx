@@ -15,8 +15,8 @@ const AdminSignUp = () => {
   const [adminAvatarImg, setAdminAvatarImg] = useState<string>("");
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
-  const params = useParams<{ tag: string; item: string }>();
-  const { orgId }: { orgId: any } = params;
+  const params = useParams<{ orgId: string; tag: string; item: string }>();
+  const { orgId } = params;
 
   const router = useRouter();
   return (
@@ -144,7 +144,7 @@ const AdminSignUp = () => {
                     .getPublicUrl(data.path);
                   setAdminAvatarImg(file.publicUrl);
                   const admin = await axios.post(
-                    "http://localhost:3000/api/admin",
+                    `http://localhost:3000/api/${orgId}`,
                     {
                       id: nanoid(),
                       name: adminName,
