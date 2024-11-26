@@ -14,10 +14,10 @@ model Organisation {
   password     String
   adminNos     Int
   orgAvatarImg String
-  OrgAdmin     OrgAdmin[]
+  OrgAdmin     Orgadmin[]
 }
 
-model OrgAdmin {
+model Orgadmin {
   id             String       @id @default(uuid())
   name           String
   email          String       @unique
