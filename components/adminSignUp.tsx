@@ -16,7 +16,7 @@ const AdminSignUp = () => {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   const params = useParams<{ tag: string; item: string }>();
-  const { orgId }: { orgId: string } = params;
+  const { orgId }: { orgId: any } = params;
 
   const router = useRouter();
   return (

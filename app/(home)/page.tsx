@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
               Planet Interview
             </p>
           </h1>
-          <div className="button grid grid-cols-2">
+          <div className="button grid grid-cols-3 gap-3">
             <Link href="/orgSignup">
               <button className="bg-gradient-to-r from-cyan-500 to-blue-500 p-3 rounded-lg mt-[50px] text-black font-semibold">
                 Register your Organisation
@@ -28,6 +28,12 @@ export default function Home() {
               </button>
               <div className="">{JSON.stringify(session.data?.user)}</div>
             </Link>
+            <button
+              className="bg-gradient-to-r from-violet-500 to-fuchsia-500 p-3 rounded-lg mt-[50px] text-black font-semibold"
+              onClick={() => signOut()}
+            >
+              Sign out
+            </button>
           </div>
         </div>
       </div>

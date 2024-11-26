@@ -1,8 +1,12 @@
 "use client";
 
+import { PrismaClient } from "@prisma/client";
+import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+const client = new PrismaClient();
 
 const SignIn = () => {
   const [orgName, setOrgName] = useState("");
@@ -84,8 +88,14 @@ const SignIn = () => {
               password: orgPassword,
               redirect: false,
             });
-            console.log(res);
-            router.push("/");
+            if (res?.status === 200) {
+              await axios.get("http://localhost:3000/api/org").then((res) => {
+                const orgDetails = res.data.orgs.find(
+                  (org: { name: any }) => org.name === orgName
+                );
+                router.push(`/admins/${orgDetails.id}`);
+              });
+            }
           }}
         >
           Login
