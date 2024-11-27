@@ -15,7 +15,7 @@ export default function Home() {
               Planet Interview
             </p>
           </h1>
-          <div className="button grid grid-cols-3 gap-3">
+          <div className="button grid grid-cols-2 gap-3">
             <Link href="/orgSignup">
               <button className="bg-gradient-to-r from-cyan-500 to-blue-500 p-3 rounded-lg mt-[50px] text-black font-semibold">
                 Register your Organisation
@@ -26,7 +26,6 @@ export default function Home() {
               <button className="bg-gradient-to-r from-violet-500 to-fuchsia-500 p-3 rounded-lg mt-[50px] text-black font-semibold">
                 Sign in with your Organisation
               </button>
-              <div className="">{JSON.stringify(session.data?.user)}</div>
             </Link>
             <button
               className="bg-gradient-to-r from-violet-500 to-fuchsia-500 p-3 rounded-lg mt-[50px] text-black font-semibold"
@@ -34,6 +33,11 @@ export default function Home() {
             >
               Sign out
             </button>
+            <Link href="/adminauth">
+              <button className="bg-gradient-to-r from-violet-500 to-fuchsia-500 p-3 rounded-lg mt-[50px] text-black font-semibold">
+                Admin Login
+              </button>
+            </Link>
           </div>
         </div>
       </div>
