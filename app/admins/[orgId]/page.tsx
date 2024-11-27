@@ -39,12 +39,14 @@ const Page = async ({ params }: { params: { orgId: string } }) => {
       <ul role="list" className="divide-y divide-gray-100">
         {admins.map(
           (admin: {
+            [x: string]: Key | null | undefined;
             email: string;
             adminAvatarImg: string;
             orgId: Key | null | undefined;
             name: any;
           }) => (
             <AdminInfoElement
+              key={admin.id}
               name={admin.name}
               email={admin.email}
               adminAvatarImg={admin.adminAvatarImg}

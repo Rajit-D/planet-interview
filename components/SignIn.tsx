@@ -90,9 +90,17 @@ const SignIn = () => {
             });
             if (res?.status === 200) {
               await axios.get("http://localhost:3000/api/org").then((res) => {
+                // console.log(res.data.orgs);
+                // console.log(orgName);
                 const orgDetails = res.data.orgs.find(
                   (org: { name: any }) => org.name === orgName
                 );
+                // const orgDetails = res.data.orgs.map(
+                //   (org: { name: string }) => {
+                //     console.log(org.name);
+                //   }
+                // );
+                console.log(orgDetails);
                 router.push(`/admins/${orgDetails.id}`);
               });
             }

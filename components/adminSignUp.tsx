@@ -155,7 +155,7 @@ const AdminSignUp = () => {
                     }
                   );
                   console.log(admin);
-                  router.push(`/admins/${orgId}/${admin.data.id}`);
+                  router.push(`/admins/${orgId}`);
                   window.alert("Successful");
                 }
               }
