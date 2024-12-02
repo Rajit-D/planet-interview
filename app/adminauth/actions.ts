@@ -32,5 +32,12 @@ export async function adminLogin(prevState: any, formData: any) {
     return errorMessage;
   }
 
-  await createSession(admin);
+  const adminPayload = {
+    id: admin.id,
+    name: admin.name,
+    email: admin.email,
+    orgid: admin.organisation,
+  };
+
+  await createSession(adminPayload);
 }

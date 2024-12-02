@@ -12,6 +12,7 @@ type SessionPayload = {
 };
 
 export async function encrypt(payload: SessionPayload) {
+  console.log(payload);
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -42,7 +43,7 @@ export async function createSession(userId: any) {
     sameSite: "lax",
     path: `/`,
   });
-  redirect(`/admins/${userId.organisation}/${userId.id}`);
+  redirect(`/admins/${userId.orgid}/${userId.id}`);
 }
 
 export async function verifySession() {
