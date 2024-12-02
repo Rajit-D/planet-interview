@@ -18,7 +18,7 @@ const client = new PrismaClient();
 
 const Page = async ({ params }: { params: { orgId: string } }) => {
   const { orgId } = await params;
-  const org: OrgData | null = await client.organisation.findUnique({
+  const org: OrgData | null = await client.organisations.findUnique({
     where: {
       id: orgId,
     },
@@ -26,9 +26,8 @@ const Page = async ({ params }: { params: { orgId: string } }) => {
 
   const response = await axios.get(`http://localhost:3000/api/${orgId}`);
   const admins = response.data.admins.filter(
-    (ad: { orgId: string }) => ad.orgId === orgId
+    (ad: { organisation: string }) => ad.organisation === orgId
   );
-
   if (!org) {
     return <div>Organization not found</div>;
   }
@@ -41,15 +40,15 @@ const Page = async ({ params }: { params: { orgId: string } }) => {
           (admin: {
             [x: string]: Key | null | undefined;
             email: string;
-            adminAvatarImg: string;
-            orgId: Key | null | undefined;
+            avatar: string;
+            organisation: Key | null | undefined;
             name: any;
           }) => (
             <AdminInfoElement
               key={admin.id}
               name={admin.name}
               email={admin.email}
-              adminAvatarImg={admin.adminAvatarImg}
+              adminAvatarImg={admin.avatar}
             />
           )
         )}

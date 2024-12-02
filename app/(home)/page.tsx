@@ -33,7 +33,7 @@ export default function Home() {
               </h1>
               <div className="flex justify-evenly items-center h-full w-full mt-7">
                 <Link href="/orgSignup">
-                  <button className="bg-gradient-to-r from-[#f3904f] to-[#ffd670] font-poppins p-[14px] w-[200px] flex items-center justify-evenly font-bold text-lg rounded-lg active:border-white duration-300 active:text-white">
+                  <button className="bg-gradient-to-r from-[#e6dada] to-[#274046] font-poppins p-[14px] w-[200px] flex items-center justify-evenly font-bold text-lg rounded-lg active:border-white duration-300 active:text-white">
                     Register <FaGlobe />
                   </button>
                 </Link>

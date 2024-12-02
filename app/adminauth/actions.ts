@@ -22,7 +22,7 @@ export async function adminLogin(prevState: any, formData: any) {
       errors: validationResult.error.flatten().fieldErrors,
     };
 
-  const admin = await client.orgadmin.findUnique({
+  const admin = await client.admins.findUnique({
     where: {
       email,
       password,

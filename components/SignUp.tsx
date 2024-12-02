@@ -3,6 +3,7 @@
 import supabase from "@/config/supabase";
 import axios from "axios";
 import { nanoid } from "nanoid";
+import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -166,12 +167,12 @@ const SignUp = () => {
                   const org = await axios.post(
                     "http://localhost:3000/api/org",
                     {
-                      id: nanoid(),
+                      id: uuidv4(),
                       name: orgName,
                       email: orgEmail,
                       password: orgPassword,
-                      adminNos: parseInt(orgUserLen),
-                      orgAvatarImg: file.publicUrl,
+                      adminNo: parseInt(orgUserLen),
+                      avatar: file.publicUrl,
                     }
                   );
                   router.push(`/admins/${org.data.id}`);

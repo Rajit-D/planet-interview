@@ -7,22 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Organisation {
-  id           String     @id @default(uuid())
-  name         String     
-  email        String     @unique
-  password     String
-  adminNos     Int
-  orgAvatarImg String
-  OrgAdmin     Orgadmin[]
+model Organisations {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  adminNo   Int
+  avatar    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  Admins    Admins[]
 }
 
-model Orgadmin {
-  id             String       @id @default(uuid())
-  name           String
-  email          String       @unique
-  password       String
-  orgId          String
-  adminAvatarImg String
-  organisation   Organisation @relation(fields: [orgId], references: [id])
+model Admins {
+  id            String        @id @default(uuid())
+  name          String
+  email         String        @unique
+  password      String
+  organisation  String
+  position      String
+  avatar        String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+  organisations Organisations @relation(fields: [organisation], references: [id])
 }

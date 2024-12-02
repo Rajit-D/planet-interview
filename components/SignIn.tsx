@@ -1,12 +1,9 @@
 "use client";
 
-import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const client = new PrismaClient();
 
 const SignIn = () => {
   const [orgName, setOrgName] = useState("");

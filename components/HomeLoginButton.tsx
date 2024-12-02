@@ -10,7 +10,7 @@ const HomeLoginButton = () => {
     <div className="relative flex flex-col items-center w-[200px] rounded-xl">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="bg-gradient-to-r from-[#f3904f] to-[#ffd670] font-poppins p-3 w-full flex items-center justify-evenly font-bold text-lg rounded-lg active:border-white duration-300 active:text-white"
+        className="bg-gradient-to-r from-[#e6dada] to-[#274046] font-poppins p-3 w-full flex items-center justify-evenly font-bold text-lg rounded-lg active:border-white duration-300 active:text-white"
       >
         Login
         {!isOpen ? (
@@ -20,7 +20,7 @@ const HomeLoginButton = () => {
         )}
       </button>
       {isOpen && (
-        <div className="bg-gradient-to-r from-[#f3904f] to-[#ffd670] absolute top-[60px] rounded-xl">
+        <div className="bg-gradient-to-r from-[#e6dada] to-[#274046] absolute top-[60px] rounded-xl">
           <Link href="/orgSignin">
             <div className="mx-3 py-2 w-[175px] flex items-center justify-between">
               as Organisation <FaGlobe />

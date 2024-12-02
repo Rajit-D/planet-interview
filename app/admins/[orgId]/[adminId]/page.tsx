@@ -1,6 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import axios from "axios";
-import { NextRequest } from "next/server";
 import React from "react";
 
 const client = new PrismaClient();
@@ -12,16 +10,18 @@ const page = async ({
 }) => {
   const { orgId, adminId } = await params;
 
-  const adminInfo: any = await client.orgadmin.findUnique({
+  const adminInfo: any = await client.admins.findUnique({
     where: {
       id: adminId,
     },
   });
-  const orgInfo: any = await client.organisation.findUnique({
+  const orgInfo: any = await client.organisations.findUnique({
     where: {
-      id: orgId,
+      id: adminInfo.organisation,
     },
   });
+  console.log("Admin: ",adminInfo)
+  console.log("Organisation: ",orgInfo)
   return (
     <div>
       Helllo {adminInfo.name} from {orgInfo.name}

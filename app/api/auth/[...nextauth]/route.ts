@@ -28,7 +28,7 @@ const handler = NextAuth({
       async authorize(credentials: any) {
         const orgEmail = credentials.email;
         const orgPass = credentials.password;
-        const org: any = await client.organisation.findUnique({
+        const org: any = await client.organisations.findUnique({
           where: {
             email: orgEmail,
             password: orgPass,

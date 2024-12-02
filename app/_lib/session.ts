@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const key = new TextEncoder().encode("confidential");
+console.log(key);
 
 type SessionPayload = {
   userId: string | number;
@@ -21,7 +22,7 @@ export async function encrypt(payload: SessionPayload) {
 export async function decrypt(session: string | undefined = "") {
   try {
     const { payload } = await jwtVerify(session, key, {
-      algorithms: "HS256",
+      algorithms: ["HS256"],
     });
     return payload;
   } catch (err) {
@@ -41,7 +42,7 @@ export async function createSession(userId: any) {
     sameSite: "lax",
     path: `/`,
   });
-  redirect(`/admins/${userId.orgId}/${userId.id}`);
+  redirect(`/admins/${userId.organisation}/${userId.id}`);
 }
 
 export async function verifySession() {
