@@ -36,7 +36,7 @@ export async function adminLogin(prevState: any, formData: any) {
     id: admin.id,
     name: admin.name,
     email: admin.email,
-    orgid: admin.organisation,
+    orgId: admin.organisation,
   };
 
   await createSession(adminPayload);

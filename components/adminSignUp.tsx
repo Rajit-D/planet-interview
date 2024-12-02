@@ -176,7 +176,6 @@ const AdminSignUp = () => {
                       position,
                     }
                   );
-                  console.log(admin);
                   router.push(`/admins/${orgId}`);
                   window.alert("Successful");
                 }

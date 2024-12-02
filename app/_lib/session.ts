@@ -43,7 +43,7 @@ export async function createSession(userId: any) {
     sameSite: "lax",
     path: `/`,
   });
-  redirect(`/admins/${userId.orgid}/${userId.id}`);
+  redirect(`/admins/${userId.orgId}/${userId.id}`);
 }
 
 export async function verifySession() {
