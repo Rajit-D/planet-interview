@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
+import PrelineScript from "@/components/PrelineScript";
 
 export const metadata: Metadata = {
   title: "Planet Interview",
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body>
         <Providers>{children}</Providers>
       </body>
+      <PrelineScript />
     </html>
   );
 }

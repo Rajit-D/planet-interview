@@ -9,11 +9,11 @@ datasource db {
 
 model Organisations {
   id        String   @id @default(uuid()) @db.Uuid
-  name      String
-  email     String   @unique
-  password  String
+  name      String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
   adminNo   Int
-  avatar    String
+  avatar    String   @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   Admins    Admins[]
@@ -21,12 +21,12 @@ model Organisations {
 
 model Admins {
   id            String        @id @default(uuid()) @db.Uuid
-  name          String
-  email         String        @unique
-  password      String
+  name          String        @db.VarChar(255)
+  email         String        @unique @db.VarChar(255)
+  password      String        @db.VarChar(255)
   organisation  String        @db.Uuid
-  position      String
-  avatar        String
+  position      String        @db.VarChar(255)
+  avatar        String        @db.VarChar(255)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
   organisations Organisations @relation(fields: [organisation], references: [id])
@@ -34,13 +34,30 @@ model Admins {
 }
 
 model Roles {
-  id         String   @id @default(uuid()) @db.Uuid
-  name       String
-  skills     String
+  id         String       @id @default(uuid()) @db.Uuid
+  name       String       @db.VarChar(255)
+  skills     String       @db.VarChar(255)
   experience Int
   minATS     Int
-  createdBy  String   @db.Uuid
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
-  Admins     Admins   @relation(fields: [createdBy], references: [id])
+  createdBy  String       @db.Uuid
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  Admins     Admins       @relation(fields: [createdBy], references: [id])
+  Candidates Candidates[]
+}
+
+model Candidates {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String   @db.VarChar(255)
+  organisation String   @db.VarChar(255)
+  experience   Int
+  role         String   @db.Uuid
+  cv           String   @db.VarChar(255)
+  address      String   @db.VarChar(255)
+  email        String   @db.VarChar(255)
+  phoneNo      String   @db.VarChar(20)
+  selected     Boolean
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  Roles        Roles    @relation(fields: [role], references: [id])
 }

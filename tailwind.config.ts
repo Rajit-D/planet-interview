@@ -9,6 +9,7 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/preline/preline.js",
   ],
   theme: {
     extend: {
@@ -34,7 +35,7 @@ export default {
       },
     },
   },
-  plugins: [addVariablesForColors],
+  plugins: [require("preline/plugin"), addVariablesForColors],
 } satisfies Config;
 
 function addVariablesForColors({ addBase, theme }: any) {
