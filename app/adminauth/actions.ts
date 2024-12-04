@@ -28,16 +28,26 @@ export async function adminLogin(prevState: any, formData: any) {
       password,
     },
   });
+  const org = await client.organisations.findUnique({
+    where: {
+      id: admin?.organisation,
+    },
+  });
   if (!admin) {
     return errorMessage;
   }
 
-  const adminPayload = {
-    id: admin.id,
-    name: admin.name,
-    email: admin.email,
+  const payloadData = {
+    adminId: admin.id,
+    adminName: admin.name,
+    adminEmail: admin.email,
+    adminAvatar: admin.avatar,
+    avatarPosition: admin.position,
     orgId: admin.organisation,
+    orgName: org?.name,
+    orgEmail: org?.email,
+    orgAvatar: org?.avatar,
   };
 
-  await createSession(adminPayload);
+  await createSession(payloadData);
 }

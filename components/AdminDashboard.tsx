@@ -1,19 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import Image from "next/image";
+import { getPayloadInfo } from "@/app/_lib/cookies";
 
-type AdminInfoPropType = {
-  orgID: string;
-  adminID: string;
-};
-
-const client = new PrismaClient();
-
-const AdminDashboard = async ({ orgID, adminID }: AdminInfoPropType) => {
-  const adminInfo: any = await client.admins.findUnique({
-    where: {
-      id: adminID,
-    },
-  });
+const AdminDashboard = async () => {
+  const payloadInfo: any = await getPayloadInfo();
   return (
     <div>
       <div
@@ -27,7 +16,7 @@ const AdminDashboard = async ({ orgID, adminID }: AdminInfoPropType) => {
           <div className="relative inline-block">
             <Image
               className="inline-block size-[40px] rounded-lg"
-              src={adminInfo.avatar}
+              src={payloadInfo.userId.adminAvatar}
               alt="Avatar"
               height="40"
               width="40"
@@ -40,7 +29,7 @@ const AdminDashboard = async ({ orgID, adminID }: AdminInfoPropType) => {
               href="#"
               aria-label="Brand"
             >
-              {adminInfo?.name}
+              {payloadInfo.userId.adminName}
             </a>
           </div>
         </div>
@@ -69,7 +58,7 @@ const AdminDashboard = async ({ orgID, adminID }: AdminInfoPropType) => {
                   <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                   <polyline points="9 22 9 12 15 12 15 22" />
                 </svg>
-                Dashboard
+                {payloadInfo.userId.orgName} Dashboard
               </a>
             </li>
 
@@ -382,96 +371,6 @@ const AdminDashboard = async ({ orgID, adminID }: AdminInfoPropType) => {
                 </ul>
               </div>
             </li>
-
-            <li className="hs-accordion" id="projects-accordion">
-              <button
-                type="button"
-                className="hs-accordion-toggle hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hs-accordion-active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                aria-expanded="true"
-                aria-controls="projects-accordion"
-              >
-                <svg
-                  className="size-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M15.5 2H8.6c-.4 0-.8.2-1.1.5-.3.3-.5.7-.5 1.1v12.8c0 .4.2.8.5 1.1.3.3.7.5 1.1.5h9.8c.4 0 .8-.2 1.1-.5.3-.3.5-.7.5-1.1V6.5L15.5 2z" />
-                  <path d="M3 7.6v12.8c0 .4.2.8.5 1.1.3.3.7.5 1.1.5h9.8" />
-                  <path d="M15 2v5h5" />
-                </svg>
-                Projects
-                <svg
-                  className="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="m18 15-6-6-6 6" />
-                </svg>
-                <svg
-                  className="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </button>
-
-              <div
-                id="projects-accordion"
-                className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-                role="region"
-                aria-labelledby="projects-accordion"
-              >
-                <ul className="pt-2 ps-2">
-                  <li>
-                    <a
-                      className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                      href="#"
-                    >
-                      Link 1
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                      href="#"
-                    >
-                      Link 2
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                      href="#"
-                    >
-                      Link 3
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
             <li>
               <a
                 className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
@@ -501,29 +400,6 @@ const AdminDashboard = async ({ orgID, adminID }: AdminInfoPropType) => {
                   <path d="M16 18h.01" />
                 </svg>
                 Calendar
-              </a>
-            </li>
-            <li>
-              <a
-                className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
-                href="#"
-              >
-                <svg
-                  className="size-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                </svg>
-                Documentation
               </a>
             </li>
           </ul>

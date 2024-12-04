@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const key = new TextEncoder().encode("confidential");
-console.log(key);
 
 type SessionPayload = {
   userId: string | number;
@@ -12,7 +11,6 @@ type SessionPayload = {
 };
 
 export async function encrypt(payload: SessionPayload) {
-  console.log(payload);
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -36,18 +34,18 @@ export async function createSession(userId: any) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, expiresAt });
 
-  (await cookies()).set(userId.email, session, {
+  (await cookies()).set("activeuser", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
     sameSite: "lax",
     path: `/`,
   });
-  redirect(`/admins/${userId.orgId}/${userId.id}`);
+  redirect(`/admins/${userId.orgId}/${userId.adminId}`);
 }
 
 export async function verifySession() {
-  const cookie = (await cookies()).get("session")?.value;
+  const cookie = (await cookies()).get("activeuser")?.value;
   const session = await decrypt(cookie);
   if (!session?.userId) {
     redirect("/login");
@@ -56,6 +54,6 @@ export async function verifySession() {
 }
 
 export async function deleteSession() {
-  (await cookies()).delete("session");
+  (await cookies()).delete("activeuser");
   redirect("/adminauth");
 }
