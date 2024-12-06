@@ -139,7 +139,7 @@ const AdminDashboard = () => {
                 role="region"
                 aria-labelledby="account-accordion"
               >
-                <RoleAccordion roles={payloadInfo.userId.rolesByAdmin} />
+                <RoleAccordion payload={payloadInfo.userId}/>
               </div>
             </li>
 
