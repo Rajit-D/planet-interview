@@ -39,6 +39,7 @@ model Roles {
   skills     String       @db.VarChar(255)
   experience Int
   minATS     Int
+  expired    Boolean      @default(false)
   createdBy  String       @db.Uuid
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now())
@@ -47,17 +48,29 @@ model Roles {
 }
 
 model Candidates {
-  id           String   @id @default(uuid()) @db.Uuid
-  name         String   @db.VarChar(255)
-  organisation String   @db.VarChar(255)
-  experience   Int
-  role         String   @db.Uuid
-  cv           String   @db.VarChar(255)
-  address      String   @db.VarChar(255)
-  email        String   @db.VarChar(255)
-  phoneNo      String   @db.VarChar(20)
-  selected     Boolean
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-  Roles        Roles    @relation(fields: [role], references: [id])
+  id                String   @id @default(uuid()) @db.Uuid
+  name              String   @db.VarChar(255)
+  email             String   @db.VarChar(255)
+  phoneNo           String   @db.VarChar(20)
+  photo             String   @db.VarChar(255)
+  country           String   @db.VarChar(255)
+  cv                String   @db.VarChar(255)
+  dob               String   @db.VarChar(255)
+  highestDegree     String   @db.VarChar(255)
+  highestDegreeCGPA Float
+  yog               String   @db.VarChar(4)
+  prevEmployer      String   @db.VarChar(255)
+  experience        Int
+  prevJobTitle      String   @db.VarChar(255)
+  duration          String   @db.VarChar(255)
+  isEmployed        Boolean
+  skills            String   @db.VarChar(255)
+  referralCode      String   @db.VarChar(255)
+  referralName      String   @db.VarChar(255)
+  links             String
+  jobRole           String   @db.Uuid
+  selected          Boolean
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
+  Roles             Roles    @relation(fields: [jobRole], references: [id])
 }
