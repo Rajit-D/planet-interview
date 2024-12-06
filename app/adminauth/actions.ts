@@ -33,6 +33,11 @@ export async function adminLogin(prevState: any, formData: any) {
       id: admin?.organisation,
     },
   });
+  const roles = await client.roles.findMany({
+    where: {
+      createdBy: admin?.id,
+    },
+  });
   if (!admin) {
     return errorMessage;
   }
@@ -42,7 +47,8 @@ export async function adminLogin(prevState: any, formData: any) {
     adminName: admin.name,
     adminEmail: admin.email,
     adminAvatar: admin.avatar,
-    avatarPosition: admin.position,
+    adminPosition: admin.position,
+    rolesByAdmin: roles,
     orgId: admin.organisation,
     orgName: org?.name,
     orgEmail: org?.email,

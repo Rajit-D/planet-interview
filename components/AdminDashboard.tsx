@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { getPayloadInfo } from "@/app/_lib/cookies";
 import { useEffect, useState } from "react";
+import RoleAccordion from "./RoleAccordion";
 
 const AdminDashboard = () => {
   const [payloadInfo, setPayloadInfo] = useState<any>(null);
@@ -16,15 +17,11 @@ const AdminDashboard = () => {
   if (!payloadInfo) return <div> </div>;
 
   return (
-    <div className="flex justify-end items-end w-screen">
+    <div className="flex h-screen flex-row">
       <div
-        id="hs-offcanvas-example"
-        className="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-64 bg-white border-e border-gray-200 pt-7 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-800 dark:border-neutral-700"
-        role="dialog"
-        tabIndex={-1}
-        aria-label="Sidebar"
+        className="w-64 bg-[#272727] h-full"
       >
-        <div className="flex items-center ml-7">
+        <div className="flex items-center ml-7 mt-8">
           <div className="relative inline-block">
             <Image
               className="inline-block size-[40px] rounded-lg"
@@ -142,32 +139,7 @@ const AdminDashboard = () => {
                 role="region"
                 aria-labelledby="account-accordion"
               >
-                <ul className="pt-2 ps-2">
-                  <li>
-                    <a
-                      className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                      href="#"
-                    >
-                      Link 1
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                      href="#"
-                    >
-                      Link 2
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                      href="#"
-                    >
-                      Link 3
-                    </a>
-                  </li>
-                </ul>
+                <RoleAccordion roles={payloadInfo.userId.rolesByAdmin} />
               </div>
             </li>
 
