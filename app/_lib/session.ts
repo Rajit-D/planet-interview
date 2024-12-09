@@ -44,6 +44,19 @@ export async function createSession(userId: any) {
   redirect(`/admins/${userId.orgId}/${userId.adminId}`);
 }
 
+export async function createKunalSession(userId: any) {
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  const session = await encrypt({ userId, expiresAt });
+
+  (await cookies()).set("kunalsession", session, {
+    httpOnly: true,
+    secure: true,
+    expires: expiresAt,
+    sameSite: "lax",
+    path: `/`,
+  });
+}
+
 export async function verifySession() {
   const cookie = (await cookies()).get("activeuser")?.value;
   const session = await decrypt(cookie);

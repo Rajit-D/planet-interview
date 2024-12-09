@@ -1,3 +1,4 @@
+import ModifyRoleButton from "@/components/ModifyRoleButton";
 import { PrismaClient } from "@prisma/client";
 import React from "react";
 
@@ -14,27 +15,30 @@ const page = async ({ params }: { params: any }) => {
     <div className="mx-6 mt-5 flex w-screen items-start">
       <div className="flex justify-center items-center w-full">
         <div className="flex items-start flex-col w-1/4 h-full ml-5 gap-y-3">
-          <p className="text-[50px]">{roleInfo?.name}</p>
           <div className="">
-            <span className="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
-              <svg
-                className="shrink-0 size-5"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                <path d="m9 12 2 2 4-4"></path>
-              </svg>
-              <p className="text-[15px]">Active</p>
-            </span>
+            <p className="text-[50px] leading-[60px]">{roleInfo?.name}</p>
+            <div className="mt-2">
+              <span className="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
+                <svg
+                  className="shrink-0 size-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                  <path d="m9 12 2 2 4-4"></path>
+                </svg>
+                <p className="text-[15px]">Active</p>
+              </span>
+            </div>
           </div>
+          <ModifyRoleButton />
         </div>
         <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto w-3/4">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -84,7 +88,6 @@ const page = async ({ params }: { params: any }) => {
                 </dd>
               </dl>
             </div>
-
             <div className="flex flex-col gap-y-3 lg:gap-y-5 p-4 md:p-5 bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-800">
               <div className="inline-flex justify-center items-center">
                 <span className="size-2 inline-block bg-green-500 rounded-full me-2"></span>

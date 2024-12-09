@@ -2,7 +2,7 @@
 
 import { adminLoginInSchema } from "../_lib/definitions";
 import { PrismaClient } from "@prisma/client";
-import { createSession } from "../_lib/session";
+import { createKunalSession, createSession } from "../_lib/session";
 
 const client = new PrismaClient();
 
@@ -55,5 +55,13 @@ export async function adminLogin(prevState: any, formData: any) {
     orgAvatar: org?.avatar,
   };
 
+  const kunalPayloaData={
+    id:admin.id,
+    name:admin.name,
+    email:admin.email,
+    orgId:admin.organisation
+  }
+
+  await createKunalSession(kunalPayloaData);
   await createSession(payloadData);
 }

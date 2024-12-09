@@ -52,6 +52,7 @@ model Candidates {
   name              String   @db.VarChar(255)
   email             String   @db.VarChar(255)
   phoneNo           String   @db.VarChar(20)
+  gender            String   @db.VarChar(255)
   photo             String   @db.VarChar(255)
   country           String   @db.VarChar(255)
   cv                String   @db.VarChar(255)
