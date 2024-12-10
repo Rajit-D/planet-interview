@@ -12,6 +12,7 @@
     "@builder.io/react-hydration-overlay": "^0.3.0",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
+    "@preline/accordion": "^2.6.0",
     "@preline/overlay": "^2.6.0",
     "@prisma/client": "^5.22.0",
     "@supabase/supabase-js": "^2.46.1",

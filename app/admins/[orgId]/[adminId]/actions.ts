@@ -24,7 +24,7 @@ export async function roleInput(prevState: any, formData: any) {
     return { message: "Invalid form submission." };
   }
 
-  const role = await client.roles.create({
+  await client.roles.create({
     data: {
       id: uuidv4(),
       name,

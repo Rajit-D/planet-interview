@@ -34,8 +34,8 @@ type PayloadType = {
 };
 
 const RoleAccordion = () => {
-  const [roleData, setRoleData] = useState([]);
-  const [payloadData, setPayloadData] = useState([]);
+  const [roleData, setRoleData] = useState<any>([]);
+  const [payloadData, setPayloadData] = useState<any>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,31 +46,28 @@ const RoleAccordion = () => {
           Authorization: `Bearer ${backendCookie}`,
         },
       });
-      console.log(data);
-      console.log(payload.userId);
-      setRoleData(data);
-      setPayloadData(payload.userId)
-      console.log(backendCookie);
+      setRoleData(data.data);
+      setPayloadData(payload.userId);
     };
     fetchData();
   }, []);
 
-  // console.log("Role data -> ", roleData);
-  // console.log("Payload data -> ", payloadData);
+  console.log("Role data -> ", roleData);
+  console.log("Payload data -> ", payloadData);
 
   return (
     <ul className="pt-2 ps-2">
-      {/* {roleData.map((role: any) => (
+      {roleData.map((role: any) => (
         <li key={role.id}>
           <Link
-            href={`/admins/${payload?.orgId}/${payload?.adminId}/${role.id}`}
+            href={`/admins/${payloadData.orgId}/${payloadData.adminId}/${role.id}`}
           >
             <p className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-neutral-800 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300">
               {role.name}
             </p>
           </Link>
         </li>
-      ))} */}
+      ))}
     </ul>
   );
 };

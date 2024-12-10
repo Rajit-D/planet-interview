@@ -1,11 +1,11 @@
+import DeleteRoleButton from "@/components/DeleteRoleButton";
 import ModifyRoleButton from "@/components/ModifyRoleButton";
 import { PrismaClient } from "@prisma/client";
-import React from "react";
 
 const client = new PrismaClient();
 
 const page = async ({ params }: { params: any }) => {
-  const { roleId } = await params;
+  const { orgId, adminId, roleId } = await params;
   const roleInfo = await client.roles.findUnique({
     where: {
       id: roleId,
@@ -38,7 +38,10 @@ const page = async ({ params }: { params: any }) => {
               </span>
             </div>
           </div>
-          <ModifyRoleButton />
+          <div className="flex justify-start">
+            <ModifyRoleButton />
+            <DeleteRoleButton orgId={orgId} adminId={adminId} roleId={roleId} />
+          </div>
         </div>
         <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto w-3/4">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
