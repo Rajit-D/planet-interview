@@ -28,7 +28,7 @@ export const useRoleStore = create<RoleStore>((set) => ({
           Authorization: `Bearer ${backendCookie}`,
         },
       });
-      set({ roles: res.data });
+      set({ roles: Array.isArray(res.data) ? res.data : [] });
     } catch (error) {
       console.log("Error while fetching -> ", error);
     }
@@ -55,7 +55,7 @@ export const useRoleStore = create<RoleStore>((set) => ({
       );
       const role = res.data;
       set((state) => ({
-        roles: [...state.roles, role],
+        roles: Array.isArray(state.roles) ? [...state.roles, role] : [role],
       }));
       console.log("Role added successfully ✅");
     } catch (error) {
@@ -71,7 +71,9 @@ export const useRoleStore = create<RoleStore>((set) => ({
         },
       });
       set((state) => ({
-        roles: state.roles.filter((role) => role.id !== roleId),
+        roles: Array.isArray(state.roles)
+          ? state.roles.filter((role) => role.id !== roleId)
+          : [],
       }));
     } catch (error) {
       console.error("Error while deleting role ->", error);

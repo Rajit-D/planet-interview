@@ -47,9 +47,13 @@ const RoleAccordion = () => {
     fetchData();
   }, [fetchRoles]);
 
+  if (!roles || roles.length === 0) {
+    return <p className="text-[12px] text-neutral-400 ml-5">No roles created yet.</p>;
+  }
+
   return (
     <ul className="ps-2">
-      {roles.map((role: any) => (
+      {roles && roles.map((role: any) => (
         <li key={role.id}>
           <Link
             href={`/admins/${payloadData.orgId}/${payloadData.adminId}/${role.id}`}
