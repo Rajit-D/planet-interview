@@ -1,9 +1,9 @@
 "use client";
 
-import axios from "axios";
-import { getBackendCookie, getPayloadInfo } from "@/app/_lib/cookies";
+import { getPayloadInfo } from "@/app/_lib/cookies";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRoleStore } from "@/app/_lib/roleStore";
 
 type RoleType = {
   id: string;
@@ -34,30 +34,22 @@ type PayloadType = {
 };
 
 const RoleAccordion = () => {
-  const [roleData, setRoleData] = useState<any>([]);
+  const roles = useRoleStore((state) => state.roles);
+  const fetchRoles = useRoleStore((state) => state.fetchRoles);
   const [payloadData, setPayloadData] = useState<any>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const payload: any = await getPayloadInfo();
-      const backendCookie = await getBackendCookie();
-      const data: any = await axios.get("http://localhost:8080/allJobRole", {
-        headers: {
-          Authorization: `Bearer ${backendCookie}`,
-        },
-      });
-      setRoleData(data.data);
+      fetchRoles();
       setPayloadData(payload.userId);
     };
     fetchData();
-  }, []);
-
-  console.log("Role data -> ", roleData);
-  console.log("Payload data -> ", payloadData);
+  }, [fetchRoles]);
 
   return (
-    <ul className="pt-2 ps-2">
-      {roleData.map((role: any) => (
+    <ul className="ps-2">
+      {roles.map((role: any) => (
         <li key={role.id}>
           <Link
             href={`/admins/${payloadData.orgId}/${payloadData.adminId}/${role.id}`}

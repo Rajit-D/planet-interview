@@ -1,13 +1,12 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
 import { getPayloadInfo } from "@/app/_lib/cookies";
+import { useRoleStore } from "@/app/_lib/roleStore";
 import { v4 as uuidv4 } from "uuid";
-
-const client = new PrismaClient();
 
 export async function roleInput(prevState: any, formData: any) {
   const payloadInfo: any = await getPayloadInfo();
+  const addRole=useRoleStore((state)=>state.addRole)
 
   const name = formData.get("name") as string;
   const skills = formData.get("skills") as string;
@@ -24,14 +23,14 @@ export async function roleInput(prevState: any, formData: any) {
     return { message: "Invalid form submission." };
   }
 
-  await client.roles.create({
-    data: {
-      id: uuidv4(),
-      name,
-      skills,
-      experience,
-      minATS,
-      createdBy,
-    },
-  });
+  const roleData = {
+    id: uuidv4(),
+    name,
+    skills,
+    experience,
+    minATS,
+    createdBy,
+  };
+
+  return roleData;
 }

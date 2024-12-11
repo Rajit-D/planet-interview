@@ -1,9 +1,10 @@
 "use client";
-import { getBackendCookie } from "@/app/_lib/cookies";
-import axios from "axios";
+
+import { useRoleStore } from "@/app/_lib/roleStore";
 import { redirect } from "next/navigation";
 
 const DeleteRoleButton = ({ orgId, adminId, roleId }: any) => {
+  const deleteRole=useRoleStore((state)=>state.deleteRole)
   return (
     <div>
       <div className="text-center">
@@ -96,20 +97,11 @@ const DeleteRoleButton = ({ orgId, adminId, roleId }: any) => {
                 <button
                   type="button"
                   className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-                  onClick={async () => {
-                    const backendCookie = await getBackendCookie();
-                    const result = await axios.delete(
-                      `http://localhost:8080/deleteJobRole?id=${roleId}`,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${backendCookie}`,
-                        },
-                      }
-                    );
-                    console.log(result);
+                  onClick={() => {
+                    deleteRole(roleId)
                     redirect(`/admins/${orgId}/${adminId}`)
-                    // router.replace(router.asPath)
                   }}
+                  data-hs-overlay="#hs-sign-out-alert"
                 >
                   Delete
                 </button>

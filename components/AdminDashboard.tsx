@@ -4,6 +4,7 @@ import { getPayloadInfo } from "@/app/_lib/cookies";
 import { useEffect, useState } from "react";
 import RoleAccordion from "./RoleAccordion";
 import AdminSignOut from "./AdminSignOut";
+import Link from "next/link";
 
 const AdminDashboard = () => {
   const [payloadInfo, setPayloadInfo] = useState<any>(null);
@@ -48,9 +49,9 @@ const AdminDashboard = () => {
           >
             <ul className="space-y-1.5">
               <li>
-                <a
+                <Link
+                  href={`/admins/${payloadInfo.userId.orgId}/${payloadInfo.userId.adminId}`}
                   className="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-700 rounded-lg hover:bg-neutral-700 dark:bg-neutral-700 dark:text-white"
-                  href="#"
                 >
                   <svg
                     className="size-4"
@@ -68,78 +69,50 @@ const AdminDashboard = () => {
                     <polyline points="9 22 9 12 15 12 15 22" />
                   </svg>
                   {payloadInfo.userId.orgName} Dashboard
-                </a>
+                </Link>
               </li>
 
-              <li className="hs-accordion" id="account-accordion">
-                <button
-                  type="button"
-                  className="hs-accordion-toggle hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hs-accordion-active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                  aria-expanded="true"
-                  aria-controls="account-accordion"
-                >
-                  <svg
-                    className="size-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="18" cy="15" r="3" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M10 15H6a4 4 0 0 0-4 4v2" />
-                    <path d="m21.7 16.4-.9-.3" />
-                    <path d="m15.2 13.9-.9-.3" />
-                    <path d="m16.6 18.7.3-.9" />
-                    <path d="m19.1 12.2.3-.9" />
-                    <path d="m19.6 18.7-.4-1" />
-                    <path d="m16.8 12.3-.4-1" />
-                    <path d="m14.3 16.6 1-.4" />
-                    <path d="m20.7 13.8 1-.4" />
-                  </svg>
-                  Roles
-                  <svg
-                    className="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m18 15-6-6-6 6" />
-                  </svg>
-                  <svg
-                    className="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </button>
-
+              <li className="hs-accordion-group">
                 <div
-                  id="account-accordion"
-                  className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-                  role="region"
-                  aria-labelledby="account-accordion"
+                  className="hs-accordion"
+                  id="hs-basic-with-title-and-arrow-stretched-heading-one"
                 >
-                  <RoleAccordion/>
+                  <button
+                    className="hs-accordion-toggle text-[15px] hs-accordion-active:text-white py-3 inline-flex items-center px-2 justify-between w-full font-normal text-start text-gray-800 hover:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
+                    aria-expanded="true"
+                    aria-controls="hs-basic-with-title-and-arrow-stretched-collapse-one"
+                  >
+                    Roles
+                    <svg
+                      className="hs-accordion-active:hidden block size-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                    <svg
+                      className="hs-accordion-active:block hidden size-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m18 15-6-6-6 6"></path>
+                    </svg>
+                  </button>
+                  <RoleAccordion />
                 </div>
               </li>
 
@@ -390,7 +363,7 @@ const AdminDashboard = () => {
             </ul>
           </nav>
         </div>
-        <AdminSignOut/>
+        <AdminSignOut />
       </div>
       <script src="../scripts/js/open-modals-on-init.js"></script>
     </div>

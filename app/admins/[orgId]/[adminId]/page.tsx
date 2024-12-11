@@ -1,10 +1,26 @@
 "use client";
 
-import { useActionState } from "react";
-import { roleInput } from "./actions";
+import { getPayloadInfo } from "@/app/_lib/cookies";
+import { useRoleStore } from "@/app/_lib/roleStore";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-const dashboard = () => {
-  const [state, formAction, loading] = useActionState(roleInput, null);
+const Dashboard = () => {
+  const [payload, setPayload] = useState<any>(null);
+  const [name, setName] = useState<string>("");
+  const [skills, setSkills] = useState<string>("");
+  const [experience, setExperience] = useState<number>(0);
+  const [minATS, setMinATS] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
+  const addRole = useRoleStore((state) => state.addRole);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const payloadInfo: any = await getPayloadInfo();
+      setPayload(payloadInfo);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="flex items-start justify-end w-screen">
@@ -73,7 +89,7 @@ const dashboard = () => {
               </button>
             </div>
             <div className="p-4 overflow-y-auto">
-              <form action={formAction}>
+              <form>
                 <div className="max-w-full">
                   <label
                     htmlFor="name"
@@ -82,9 +98,12 @@ const dashboard = () => {
                     Name of the role:
                   </label>
                   <input
-                    type="name"
+                    type="text"
                     id="name"
                     name="name"
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
                     className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                     placeholder="XYZ Specialist"
                   />
@@ -98,9 +117,12 @@ const dashboard = () => {
                   </label>
                   <textarea
                     id="skills"
+                    name="skills"
+                    onChange={(e) => {
+                      setSkills(e.target.value);
+                    }}
                     className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                     rows={3}
-                    name="skills"
                     placeholder="eg. HTML, CSS,..."
                   ></textarea>
                 </div>
@@ -114,8 +136,11 @@ const dashboard = () => {
                     </label>
                     <input
                       type="number"
-                      name="experience"
                       id="experience"
+                      name="experience"
+                      onChange={(e) => {
+                        setExperience(parseInt(e.target.value));
+                      }}
                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       placeholder=""
                     />
@@ -131,6 +156,9 @@ const dashboard = () => {
                       type="number"
                       id="minATS"
                       name="minATS"
+                      onChange={(e) => {
+                        setMinATS(parseInt(e.target.value));
+                      }}
                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       placeholder=""
                     />
@@ -146,8 +174,24 @@ const dashboard = () => {
                   </button>
                   <button
                     type="submit"
-                    aria-disabled={loading}
+                    disabled={loading}
                     className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    onClick={() => {
+                      const roleData = {
+                        id: uuidv4(),
+                        name,
+                        skills,
+                        experience,
+                        minATS,
+                        createdBy: payload.userId.adminId,
+                      };
+                      addRole(roleData);
+                      setLoading(true);
+                      setTimeout(() => {
+                        console.log("Form submitted");
+                        setLoading(false);
+                      }, 1000);
+                    }}
                   >
                     {loading ? "Creating..." : "Create"}
                   </button>
@@ -160,4 +204,5 @@ const dashboard = () => {
     </div>
   );
 };
-export default dashboard;
+
+export default Dashboard;
