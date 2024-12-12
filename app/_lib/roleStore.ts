@@ -127,15 +127,20 @@ export const useRoleStore = create<RoleStore>((set) => ({
   expireRole: async (roleId: string) => {
     try {
       const backendCookie = await getBackendCookie();
-      await axios.put(`http://localhost:8080/expireJobRole?id=${roleId}`, {
-        headers: {
-          Authorization: `Bearer ${backendCookie}`,
-        },
-      });
+      await axios.put(
+        `http://localhost:8080/expireJobRole?id=${roleId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${backendCookie}`,
+          },
+        }
+      );
+
       set((state) => ({
-        roles: Array.isArray(state.roles)
-          ? state.roles.filter((role) => role.id !== roleId)
-          : [],
+        roles: state.roles.map((role) =>
+          role.id === roleId ? { ...role, expired: true } : role
+        ),
       }));
     } catch (error) {
       console.error("Error while expiring role ->", error);

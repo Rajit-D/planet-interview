@@ -35,7 +35,6 @@ type PayloadType = {
 
 const RoleAccordion = () => {
   const roles = useRoleStore((state) => state.roles);
-  console.log("from role-accordion -> ", roles);
   const fetchRoles = useRoleStore((state) => state.fetchRoles);
   const [payloadData, setPayloadData] = useState<any>([]);
 

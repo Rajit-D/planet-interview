@@ -1,12 +1,14 @@
 import DeleteRoleButton from "@/components/DeleteRoleButton";
 import ModifyRoleButton from "@/components/ModifyRoleButton";
+import RoleStatus from "@/components/RoleStatus";
 import { PrismaClient } from "@prisma/client";
 
 const client = new PrismaClient();
 
 const page = async ({ params }: { params: any }) => {
   const { orgId, adminId, roleId } = await params;
-  const roleInfo = await client.roles.findUnique({
+
+  const roleInfo: any = await client.roles.findUnique({
     where: {
       id: roleId,
     },
@@ -18,24 +20,7 @@ const page = async ({ params }: { params: any }) => {
           <div className="">
             <p className="text-[50px] leading-[60px]">{roleInfo?.name}</p>
             <div className="mt-2">
-              <span className="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
-                <svg
-                  className="shrink-0 size-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
-                <p className="text-[15px]">Active</p>
-              </span>
+              <RoleStatus roleId={roleId}/>
             </div>
           </div>
           <div className="flex justify-start">
