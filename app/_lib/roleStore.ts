@@ -11,11 +11,25 @@ interface Role {
   createdBy: any;
 }
 
+interface FullRole {
+  id: any;
+  name: string;
+  skills: string;
+  experience: number;
+  minATS: number;
+  createdBy: any;
+  expired: boolean;
+  createdAt: any;
+  updatedAt: any;
+}
+
 interface RoleStore {
   roles: Role[];
   fetchRoles: () => Promise<void>;
   addRole: (newRole: Role) => void;
   deleteRole: (roleId: string) => Promise<void>;
+  updateRole: (updatedRole: FullRole) => Promise<void>;
+  expireRole: (roleId: string) => Promise<void>;
 }
 
 export const useRoleStore = create<RoleStore>((set) => ({
@@ -77,6 +91,54 @@ export const useRoleStore = create<RoleStore>((set) => ({
       }));
     } catch (error) {
       console.error("Error while deleting role ->", error);
+    }
+  },
+  updateRole: async (updatedRole: FullRole) => {
+    try {
+      const backendCookie = await getBackendCookie();
+      const updated = await axios.put(
+        "http://localhost:8080/updateJobRole",
+        {
+          id: updatedRole.id,
+          name: updatedRole.name,
+          skills: updatedRole.skills,
+          experience: updatedRole.experience,
+          minATS: updatedRole.minATS,
+          createdBy: updatedRole.createdBy,
+          expired: updatedRole.expired,
+          createdAt: updatedRole.createdAt,
+          updatedAt: updatedRole.updatedAt,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${backendCookie}`,
+          },
+        }
+      );
+      set((state) => ({
+        roles: state.roles.map((role) =>
+          role.id === updatedRole.id ? { ...role, ...updated.data } : role
+        ),
+      }));
+    } catch (error) {
+      console.error("Error while editing -> ", error);
+    }
+  },
+  expireRole: async (roleId: string) => {
+    try {
+      const backendCookie = await getBackendCookie();
+      await axios.put(`http://localhost:8080/expireJobRole?id=${roleId}`, {
+        headers: {
+          Authorization: `Bearer ${backendCookie}`,
+        },
+      });
+      set((state) => ({
+        roles: Array.isArray(state.roles)
+          ? state.roles.filter((role) => role.id !== roleId)
+          : [],
+      }));
+    } catch (error) {
+      console.error("Error while expiring role ->", error);
     }
   },
 }));

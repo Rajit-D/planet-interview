@@ -1,10 +1,27 @@
 "use client";
 
-import { modifyRole } from "@/app/admins/[orgId]/[adminId]/[roleId]/actions";
-import { useActionState } from "react";
+import { useRoleStore } from "@/app/_lib/roleStore";
+import { useEffect, useState } from "react";
 
-const ModifyRoleButton = () => {
-  const [state, formAction, loading] = useActionState(modifyRole, null);
+const ModifyRoleButton = ({ roleId }: any) => {
+  const roles = useRoleStore((state) => state.roles);
+  const role: any = roles.find((r) => r.id === roleId);
+  const updateRole = useRoleStore((state) => state.updateRole);
+
+  const [name, setName] = useState<any>("");
+  const [skills, setSkills] = useState<any>("");
+  const [experience, setExperience] = useState<any>(0);
+  const [minATS, setMinATS] = useState<any>(0);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (role) {
+      setName(role.name);
+      setSkills(role.skills);
+      setExperience(role.experience);
+      setMinATS(role.minATS);
+    }
+  }, [role]);
   return (
     <div className="edit">
       <button
@@ -72,7 +89,7 @@ const ModifyRoleButton = () => {
               </button>
             </div>
             <div className="p-4 overflow-y-auto">
-              <form action={formAction}>
+              <form>
                 <div className="max-w-full">
                   <label
                     htmlFor="name"
@@ -84,6 +101,10 @@ const ModifyRoleButton = () => {
                     type="name"
                     id="name"
                     name="name"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
                     className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                     placeholder="XYZ Specialist"
                   />
@@ -93,7 +114,7 @@ const ModifyRoleButton = () => {
                     htmlFor="skills"
                     className="block text-sm font-medium mb-2 dark:text-white"
                   >
-                    Skill required:
+                    Skills required:
                   </label>
                   <textarea
                     id="skills"
@@ -101,6 +122,10 @@ const ModifyRoleButton = () => {
                     rows={3}
                     name="skills"
                     placeholder="eg. HTML, CSS,..."
+                    value={skills}
+                    onChange={(e) => {
+                      setSkills(e.target.value);
+                    }}
                   ></textarea>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -117,6 +142,10 @@ const ModifyRoleButton = () => {
                       id="experience"
                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       placeholder=""
+                      value={experience}
+                      onChange={(e) => {
+                        setExperience(parseInt(e.target.value));
+                      }}
                     />
                   </div>
                   <div className="mt-3">
@@ -132,6 +161,10 @@ const ModifyRoleButton = () => {
                       name="minATS"
                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       placeholder=""
+                      value={minATS}
+                      onChange={(e) => {
+                        setMinATS(parseInt(e.target.value));
+                      }}
                     />
                   </div>
                 </div>
@@ -145,10 +178,50 @@ const ModifyRoleButton = () => {
                   </button>
                   <button
                     type="submit"
-                    aria-disabled={loading}
                     className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                    onClick={() => {
+                      const updatedRole = {
+                        id: role.id,
+                        name,
+                        skills,
+                        experience,
+                        minATS,
+                        createdBy: role.createdBy,
+                        expired: role.expired,
+                        createdAt: role.createdAt,
+                        updatedAt: function getFormattedTimestamp() {
+                          const now = new Date();
+                          const year = now.getFullYear();
+                          const month = String(now.getMonth() + 1).padStart(
+                            2,
+                            "0"
+                          );
+                          const date = String(now.getDate()).padStart(2, "0");
+                          const hours = String(now.getHours()).padStart(2, "0");
+                          const minutes = String(now.getMinutes()).padStart(
+                            2,
+                            "0"
+                          );
+                          const seconds = String(now.getSeconds()).padStart(
+                            2,
+                            "0"
+                          );
+                          const milliseconds = String(
+                            now.getMilliseconds()
+                          ).padStart(3, "0");
+
+                          return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}.${milliseconds}`;
+                        },
+                      };
+                      updateRole(updatedRole);
+                      setLoading(true);
+                      setTimeout(() => {
+                        console.log("Form submitted");
+                        setLoading(false);
+                      }, 1000);
+                    }}
                   >
-                    {loading ? "Creating..." : "Create"}
+                    Update
                   </button>
                 </div>
               </form>

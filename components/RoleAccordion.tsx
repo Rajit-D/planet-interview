@@ -35,6 +35,7 @@ type PayloadType = {
 
 const RoleAccordion = () => {
   const roles = useRoleStore((state) => state.roles);
+  console.log("from role-accordion -> ", roles);
   const fetchRoles = useRoleStore((state) => state.fetchRoles);
   const [payloadData, setPayloadData] = useState<any>([]);
 
@@ -48,22 +49,25 @@ const RoleAccordion = () => {
   }, [fetchRoles]);
 
   if (!roles || roles.length === 0) {
-    return <p className="text-[12px] text-neutral-400 ml-5">No roles created yet.</p>;
+    return (
+      <p className="text-[12px] text-neutral-400 ml-5">No roles created yet.</p>
+    );
   }
 
   return (
     <ul className="ps-2">
-      {roles && roles.map((role: any) => (
-        <li key={role.id}>
-          <Link
-            href={`/admins/${payloadData.orgId}/${payloadData.adminId}/${role.id}`}
-          >
-            <p className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-neutral-800 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300">
-              {role.name}
-            </p>
-          </Link>
-        </li>
-      ))}
+      {roles &&
+        roles.map((role: any) => (
+          <li key={role.id}>
+            <Link
+              href={`/admins/${payloadData.orgId}/${payloadData.adminId}/${role.id}`}
+            >
+              <p className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-neutral-800 focus:outline-none focus:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300">
+                {role.name}
+              </p>
+            </Link>
+          </li>
+        ))}
     </ul>
   );
 };

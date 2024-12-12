@@ -39,7 +39,7 @@ const page = async ({ params }: { params: any }) => {
             </div>
           </div>
           <div className="flex justify-start">
-            <ModifyRoleButton />
+            <ModifyRoleButton roleId={roleId} />
             <DeleteRoleButton orgId={orgId} adminId={adminId} roleId={roleId} />
           </div>
         </div>
