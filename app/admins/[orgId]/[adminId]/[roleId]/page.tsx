@@ -1,3 +1,4 @@
+import CandidateTable from "@/components/CandidateTable";
 import DeleteRoleButton from "@/components/DeleteRoleButton";
 import ModifyRoleButton from "@/components/ModifyRoleButton";
 import RoleStatus from "@/components/RoleStatus";
@@ -13,14 +14,20 @@ const page = async ({ params }: { params: any }) => {
       id: roleId,
     },
   });
+  const candidatesInfo: any = await client.candidates.findMany({
+    where: {
+      jobRole: roleId,
+    },
+  });
+  console.log("Candidates Info -> ", candidatesInfo);
   return (
-    <div className="mx-6 mt-5 flex w-screen items-start">
+    <div className="ml-[16.5rem] mt-5 flex w-full flex-col items-start">
       <div className="flex justify-center items-center w-full">
-        <div className="flex items-start flex-col w-1/4 h-full ml-5 gap-y-3">
+        <div className="flex items-start justify-center flex-col w-1/4 h-full ml-5 gap-y-3">
           <div className="">
             <p className="text-[50px] leading-[60px]">{roleInfo?.name}</p>
             <div className="mt-2">
-              <RoleStatus roleId={roleId}/>
+              <RoleStatus roleId={roleId} />
             </div>
           </div>
           <div className="flex justify-start">
@@ -40,7 +47,7 @@ const page = async ({ params }: { params: any }) => {
 
               <div className="text-center">
                 <h3 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-gray-800 dark:text-neutral-200">
-                  150
+                  {candidatesInfo.length}
                 </h3>
               </div>
 
@@ -86,7 +93,11 @@ const page = async ({ params }: { params: any }) => {
 
               <div className="text-center">
                 <h3 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-gray-800 dark:text-neutral-200">
-                  25
+                {
+                    candidatesInfo.filter(
+                      (candidate: any) => candidate.selected === true
+                    ).length
+                  }
                 </h3>
               </div>
 
@@ -133,7 +144,11 @@ const page = async ({ params }: { params: any }) => {
 
               <div className="text-center">
                 <h3 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-gray-800 dark:text-neutral-200">
-                  4
+                  {
+                    candidatesInfo.filter(
+                      (candidate: any) => candidate.selected === false
+                    ).length
+                  }
                 </h3>
               </div>
 
@@ -172,6 +187,7 @@ const page = async ({ params }: { params: any }) => {
           </div>
         </div>
       </div>
+      <CandidateTable roleName={roleInfo?.name} roleId={roleId} />
     </div>
   );
 };

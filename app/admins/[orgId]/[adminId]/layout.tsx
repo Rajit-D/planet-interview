@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <div className="w-screen flex justify-start">
+      <div className="flex justify-start">
         <Providers>
           <AdminDashboard /> {children}
         </Providers>

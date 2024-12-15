@@ -19,7 +19,7 @@ const AdminDashboard = () => {
   if (!payloadInfo) return <div> </div>;
 
   return (
-    <div className="flex h-screen flex-row">
+    <div className="flex h-screen flex-row fixed">
       <div className="w-64 bg-[#272727] h-full">
         <div className="">
           <div className="flex items-center ml-7 mt-8">
