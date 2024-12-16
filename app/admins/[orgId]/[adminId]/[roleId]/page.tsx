@@ -19,7 +19,7 @@ const page = async ({ params }: { params: any }) => {
       jobRole: roleId,
     },
   });
-  console.log("Candidates Info -> ", candidatesInfo);
+
   return (
     <div className="ml-[16.5rem] mt-5 flex w-full flex-col items-start">
       <div className="flex justify-center items-center w-full">

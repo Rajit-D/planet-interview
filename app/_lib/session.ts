@@ -60,6 +60,7 @@ export async function createKunalSession(userId: any) {
 export async function verifySession() {
   const cookie = (await cookies()).get("activeuser")?.value;
   const session = await decrypt(cookie);
+  console.log(session);
   if (!session?.userId) {
     redirect("/login");
   }

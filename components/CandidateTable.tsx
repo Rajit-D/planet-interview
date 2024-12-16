@@ -1,57 +1,16 @@
 "use client";
 
-import { getBackendCookie } from "@/app/_lib/cookies";
-import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CandidateRow from "./CandidateRow";
-
-interface candidatesDataType {
-  country: string;
-  createdAt: string;
-  cv: string;
-  dob: string;
-  duration: string;
-  email: string;
-  experience: number;
-  gender: string;
-  highestDegree: string;
-  highestDegreeCGPA: number;
-  id: string;
-  isEmployed: boolean;
-  jobRole: string;
-  links: string;
-  name: string;
-  phoneNo: string;
-  photo: string;
-  prevEmployer: string;
-  prevJobTitle: string;
-  referralCode: string;
-  referralName: string;
-  selected: boolean;
-  skills: string;
-  updatedAt: string;
-  yog: string;
-}
+import { useCandidateStore } from "@/app/_lib/candidateStore";
 
 const CandidateTable = ({ roleName, roleId }: any) => {
-  const [candidatesData, setCandidatesData] = useState([]);
+  const candidates = useCandidateStore((state) => state.candidates);
+  const fetchCandidatesByRoleID = useCandidateStore((state) => state.fetchCandidatesByRoleID);
   useEffect(() => {
-    const fetchCandidatesData = async () => {
-      const backendCookie = await getBackendCookie();
-      const data = await axios.get(
-        `http://localhost:8080/allCandidate?id=${roleId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${backendCookie}`,
-          },
-        }
-      );
-      setCandidatesData(data.data);
-    };
-    fetchCandidatesData();
-  }, []);
+    fetchCandidatesByRoleID(roleId);
+  }, [fetchCandidatesByRoleID]);
   return (
     <div className="w-[95%] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
       <div className="flex flex-col">
@@ -152,7 +111,7 @@ const CandidateTable = ({ roleName, roleId }: any) => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                  {candidatesData.map((candidate, id) => (
+                  {candidates.map((candidate, id) => (
                     <CandidateRow candidateData={candidate} key={id} />
                   ))}
                 </tbody>
@@ -162,9 +121,9 @@ const CandidateTable = ({ roleName, roleId }: any) => {
                 <div>
                   <p className="text-sm text-gray-600 dark:text-neutral-400">
                     <span className="font-semibold text-gray-800 dark:text-neutral-200">
-                      {candidatesData.length}
-                    </span>
-                    {" "}results
+                      {candidates.length}
+                    </span>{" "}
+                    results
                   </p>
                 </div>
 

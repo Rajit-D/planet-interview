@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { FaGlobe } from "react-icons/fa6";
 import Link from "next/link";
+import { getPayloadInfo } from "@/app/_lib/cookies";
+import { redirect } from "next/navigation";
 
 const HomeLoginButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,11 +28,20 @@ const HomeLoginButton = () => {
               as Organisation <FaGlobe />
             </div>
           </Link>
-          <Link href="/adminauth">
-            <div className="mx-3 py-2 pb-3 w-[175px] flex items-center justify-between">
-              as Admin <IoPersonCircleSharp className="text-[20px]" />
-            </div>
-          </Link>
+          <div
+            className="mx-3 py-2 pb-3 w-[175px] flex items-center justify-between cursor-pointer"
+            onClick={async () => {
+              const activeUserInfo: any = await getPayloadInfo();
+              console.log(activeUserInfo);
+              if (activeUserInfo)
+                redirect(
+                  `/admins/${activeUserInfo.userId.orgId}/${activeUserInfo.userId.adminId}`
+                );
+              else redirect("/adminauth");
+            }}
+          >
+            as Admin <IoPersonCircleSharp className="text-[20px]" />
+          </div>
         </div>
       )}
     </div>
