@@ -55,12 +55,13 @@ export async function adminLogin(prevState: any, formData: any) {
     orgAvatar: org?.avatar,
   };
 
-  const kunalPayloaData={
-    id:admin.id,
-    name:admin.name,
-    email:admin.email,
-    orgId:admin.organisation
-  }
+  const kunalPayloaData = {
+    id: admin.id,
+    name: admin.name,
+    email: admin.email,
+    orgId: admin.organisation,
+    orgName: org?.name,
+  };
 
   await createKunalSession(kunalPayloaData);
   await createSession(payloadData);
