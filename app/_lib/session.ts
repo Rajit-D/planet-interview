@@ -69,5 +69,6 @@ export async function verifySession() {
 
 export async function deleteSession() {
   (await cookies()).delete("activeuser");
+  (await cookies()).delete("kunalsession");
   redirect("/adminauth");
 }
