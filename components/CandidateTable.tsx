@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useEffect } from "react";
 import CandidateRow from "./CandidateRow";
 import { useCandidateStore } from "@/app/_lib/candidateStore";
+import dynamic from "next/dynamic";
 
 const CandidateTable = ({ roleName, roleId }: any) => {
   const candidates = useCandidateStore((state) => state.candidates);
-  const fetchCandidatesByRoleID = useCandidateStore((state) => state.fetchCandidatesByRoleID);
+  const fetchCandidatesByRoleID = useCandidateStore(
+    (state) => state.fetchCandidatesByRoleID
+  );
   useEffect(() => {
     fetchCandidatesByRoleID(roleId);
   }, [fetchCandidatesByRoleID]);
@@ -181,4 +184,4 @@ const CandidateTable = ({ roleName, roleId }: any) => {
   );
 };
 
-export default CandidateTable;
+export default dynamic(() => Promise.resolve(CandidateTable), { ssr: false });

@@ -1,34 +1,14 @@
-import Image from "next/image";
+"use client";
 
-interface CandidateDataType {
-  country: string;
-  createdAt: string;
-  cv: string;
-  dob: string;
-  duration: string;
-  email: string;
-  experience: number;
-  gender: string;
-  highestDegree: string;
-  highestDegreeCGPA: number;
-  id: string;
-  isEmployed: boolean;
-  jobRole: string;
-  links: string;
-  name: string;
-  phoneNo: string;
-  photo: string;
-  prevEmployer: string;
-  prevJobTitle: string;
-  referralCode: string;
-  referralName: string;
-  selected: boolean;
-  skills: string;
-  updatedAt: string;
-  yog: string;
-}
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const CandidateRow = ({ candidateData }: any) => {
+  const pathname = usePathname();
+  const pathArray=pathname.split("/");
+
   return (
     <tr>
       <td className="size-px whitespace-nowrap">
@@ -58,7 +38,7 @@ const CandidateRow = ({ candidateData }: any) => {
                 {candidateData.name}
               </span>
               <span className="block text-sm text-gray-500 dark:text-neutral-500">
-              {candidateData.email}
+                {candidateData.email}
               </span>
             </div>
           </div>
@@ -67,7 +47,7 @@ const CandidateRow = ({ candidateData }: any) => {
       <td className="h-px w-72 whitespace-nowrap">
         <div className="px-6 py-3">
           <span className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-          {candidateData.phoneNo}
+            {candidateData.phoneNo}
           </span>
         </div>
       </td>
@@ -100,22 +80,23 @@ const CandidateRow = ({ candidateData }: any) => {
       <td className="size-px whitespace-nowrap">
         <div className="px-6 py-3">
           <span className="text-sm text-gray-500 dark:text-neutral-500">
-          {candidateData.createdAt}
+            {candidateData.createdAt}
           </span>
         </div>
       </td>
       <td className="size-px whitespace-nowrap">
         <div className="px-6 py-1.5">
-          <a
+          <Link
             className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-            href="#"
+            href={`/candidate/${pathArray[pathArray.length-1]}/${candidateData.id}`}
+            target="_blank"
           >
             View details
-          </a>
+          </Link>
         </div>
       </td>
     </tr>
   );
 };
 
-export default CandidateRow;
+export default dynamic(() => Promise.resolve(CandidateRow), { ssr: false });
