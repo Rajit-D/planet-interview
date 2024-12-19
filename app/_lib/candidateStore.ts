@@ -37,6 +37,7 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
   candidates: [],
   fetchCandidatesByRoleID: async (id: string) => {
     try {
+      console.log("ID -> ", id);
       const backendCookie = await getBackendCookie();
       const data = await axios.get(
         `http://localhost:8080/allCandidate?id=${id}`,

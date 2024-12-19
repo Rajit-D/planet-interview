@@ -99,4 +99,4 @@ const CandidateRow = ({ candidateData }: any) => {
   );
 };
 
-export default dynamic(() => Promise.resolve(CandidateRow), { ssr: false });
+export default CandidateRow;

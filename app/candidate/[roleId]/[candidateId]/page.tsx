@@ -236,7 +236,7 @@ const page = async ({ params }: any) => {
               {candidateInfo.prevJobTitle ? (
                 <div className="mt-4">
                   <strong>Previous Job Title:</strong>
-                  <p className="font-light">{candidateInfo.previousJobTitle}</p>
+                  <p className="font-light">{candidateInfo.prevJobTitle}</p>
                   <br />
                   <strong>Employer:</strong>{" "}
                   <p className="font-light">{candidateInfo.previousEmployer}</p>

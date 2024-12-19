@@ -1,24 +1,59 @@
+"use client";
+
+import { getBackendCookie } from "@/app/_lib/cookies";
 import CandidateTable from "@/components/CandidateTable";
 import DeleteRoleButton from "@/components/DeleteRoleButton";
 import ModifyRoleButton from "@/components/ModifyRoleButton";
 import RoleStatus from "@/components/RoleStatus";
-import { PrismaClient } from "@prisma/client";
+import axios from "axios";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const client = new PrismaClient();
+interface Role {
+  id: any;
+  name: string;
+  skills: string;
+  experience: number;
+  minATS: number;
+  createdBy: any;
+  createdAt: any;
+  updatedAt: any;
+}
 
-const page = async ({ params }: { params: any }) => {
-  const { orgId, adminId, roleId } = await params;
+const page = () => {
+  const pathname = usePathname();
+  const pathnameArray = pathname.split("/");
+  const [roleInfo, setRoleInfo] = useState<Role>();
+  const [candidatesInfo, setCandidatesInfo] = useState([]);
 
-  const roleInfo: any = await client.roles.findUnique({
-    where: {
-      id: roleId,
-    },
-  });
-  const candidatesInfo: any = await client.candidates.findMany({
-    where: {
-      jobRole: roleId,
-    },
-  });
+  useEffect(() => {
+    const fetchInfo = async () => {
+      const backendCookie = await getBackendCookie();
+      const roleData: any = await axios.get(
+        `http://localhost:8080/singleJobRole?id=${
+          pathnameArray[pathnameArray.length - 1]
+        }`,
+        {
+          headers: {
+            Authorization: `Bearer ${backendCookie}`,
+          },
+        }
+      );
+      setRoleInfo(roleData.data);
+      const candidateList: any = await axios.get(
+        `http://localhost:8080/allCandidate?id=${
+          pathnameArray[pathnameArray.length - 1]
+        }`,
+        {
+          headers: {
+            Authorization: `Bearer ${backendCookie}`,
+          },
+        }
+      );
+      setCandidatesInfo(candidateList.data);
+    };
+    fetchInfo();
+  }, []);
 
   return (
     <div className="ml-[16.5rem] mt-5 flex w-full flex-col items-start">
@@ -27,12 +62,16 @@ const page = async ({ params }: { params: any }) => {
           <div className="">
             <p className="text-[50px] leading-[60px]">{roleInfo?.name}</p>
             <div className="mt-2">
-              <RoleStatus roleId={roleId} />
+              <RoleStatus roleId={roleInfo?.id} />
             </div>
           </div>
           <div className="flex justify-start">
-            <ModifyRoleButton roleId={roleId} />
-            <DeleteRoleButton orgId={orgId} adminId={adminId} roleId={roleId} />
+            <ModifyRoleButton roleId={roleInfo?.id} />
+            <DeleteRoleButton
+              orgId={pathnameArray[pathnameArray.length - 3]}
+              adminId={pathnameArray[pathnameArray.length - 2]}
+              roleId={pathnameArray[pathnameArray.length - 1]}
+            />
           </div>
         </div>
         <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto w-3/4">
@@ -93,7 +132,7 @@ const page = async ({ params }: { params: any }) => {
 
               <div className="text-center">
                 <h3 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-gray-800 dark:text-neutral-200">
-                {
+                  {
                     candidatesInfo.filter(
                       (candidate: any) => candidate.selected === true
                     ).length
@@ -187,7 +226,10 @@ const page = async ({ params }: { params: any }) => {
           </div>
         </div>
       </div>
-      <CandidateTable roleName={roleInfo?.name} roleId={roleId} />
+      <CandidateTable
+        roleName={roleInfo?.name}
+        roleId={pathnameArray[pathnameArray.length - 1]}
+      />
     </div>
   );
 };

@@ -184,4 +184,4 @@ const CandidateTable = ({ roleName, roleId }: any) => {
   );
 };
 
-export default dynamic(() => Promise.resolve(CandidateTable), { ssr: false });
+export default CandidateTable;
