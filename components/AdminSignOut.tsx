@@ -9,7 +9,7 @@ const AdminSignOut = () => {
       className="py-3 px-4 ml-6 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-teal-100 text-teal-800 hover:bg-teal-200 focus:outline-none focus:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:text-teal-500 dark:bg-teal-800/30 dark:hover:bg-teal-800/20 dark:focus:bg-teal-800/20"
       onClick={async () => {
         await axios.get("http://localhost:3000/api/adminsignout");
-        redirect("/adminauth");
+        redirect("/");
       }}
     >
       Sign out
