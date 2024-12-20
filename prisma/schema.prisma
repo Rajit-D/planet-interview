@@ -57,6 +57,7 @@ model Candidates {
   country           String   @db.VarChar(255)
   cv                String   @db.VarChar(255)
   dob               String   @db.VarChar(255)
+  highestDegreeOrg  String   @db.VarChar(255)
   highestDegree     String   @db.VarChar(255)
   highestDegreeCGPA Float
   yog               String   @db.VarChar(4)
@@ -70,7 +71,7 @@ model Candidates {
   referralName      String   @db.VarChar(255)
   links             String
   jobRole           String   @db.Uuid
-  selected          Boolean
+  selected          String   @default("pending") @db.VarChar(20)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now())
   Roles             Roles    @relation(fields: [jobRole], references: [id])

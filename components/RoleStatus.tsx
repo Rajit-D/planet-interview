@@ -39,7 +39,7 @@ const RoleStatus = ({ roleId }: any) => {
             <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
             <path d="m9 12 2 2 4-4"></path>
           </svg>
-          <p className="text-[15px]">Connected</p>
+          <p className="text-[15px]">Active</p>
         </span>
       ) : (
         <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-red-100 text-red-800 rounded-full dark:bg-red-500/10 dark:text-red-500">
