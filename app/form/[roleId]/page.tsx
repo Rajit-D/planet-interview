@@ -1,6 +1,7 @@
 "use client";
 
 import { uploadFileToSupabase, validateCandidate } from "@/lib/utils";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -15,6 +16,7 @@ export type CandidateData = {
   cv: string;
   dob: string;
   highestDegree: string;
+  highestDegreeOrg: string;
   highestDegreeCGPA: number;
   yog: string;
   prevEmployer: string;
@@ -32,7 +34,13 @@ export type CandidateData = {
 const roleForm = () => {
   const { roleId } = useParams();
   const router = useRouter();
-  const [roleData, setRoleData] = useState({name: "", skills: "", experience: 0});
+  const [roleData, setRoleData] = useState({
+    name: "",
+    skills: "",
+    experience: 0,
+    expired: false,
+  });
+  const [formExpired, setFormExpired] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [photoFile, setPhotoFile] = useState<File>();
@@ -47,6 +55,7 @@ const roleForm = () => {
     dob: "",
     gender: "Male",
     highestDegree: "",
+    highestDegreeOrg: "",
     highestDegreeCGPA: 0,
     yog: "",
     prevEmployer: "",
@@ -69,6 +78,9 @@ const roleForm = () => {
           `http://localhost:8080/formJobData?id=${roleId}`
         );
         setRoleData(res.data);
+        if (res.data.expired) {
+          setFormExpired(true);
+        }
         setLoading(false);
       } catch (error) {
         router.push("/notfound");
@@ -79,24 +91,21 @@ const roleForm = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    console.log(data);
     const photoUrl = await uploadFileToSupabase(photoFile, "candidate-photo");
     const cvUrl = await uploadFileToSupabase(cvFile, "candidate-cv");
-    let uploadData: CandidateData = {
+    let uploadData = {
       ...data,
       photo: photoUrl,
       cv: cvUrl,
       jobRole: roleId,
+      roleName: roleData.name,
     };
     if (!validateCandidate(uploadData)) {
       window.alert("some fields are empty");
       return;
     }
     try {
-      await axios.post(
-        "http://localhost:8080/submitForm",
-        uploadData
-      );
+      await axios.post("http://localhost:8080/submitForm", uploadData);
     } catch (error) {
       window.alert(error);
       return;
@@ -111,6 +120,7 @@ const roleForm = () => {
       dob: "",
       gender: "Male",
       highestDegree: "",
+      highestDegreeOrg: "",
       highestDegreeCGPA: 0,
       yog: "",
       prevEmployer: "",
@@ -128,25 +138,88 @@ const roleForm = () => {
   };
 
   return loading ? (
-    <div className="flex justify-center items-center h-screen">
-      <div role="status">
-        <svg
-          aria-hidden="true"
-          className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-          viewBox="0 0 100 101"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-            fill="currentColor"
-          />
-          <path
-            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-            fill="currentFill"
-          />
-        </svg>
-        <span className="sr-only">Loading...</span>
+    <div className="flex items-center justify-center h-screen">
+      <DotLottieReact
+        src="https://lottie.host/fda9334c-2ffe-427d-a24c-7bdf3531ed09/ocmy6FGYYA.lottie"
+        loop
+        autoplay
+        style={{ width: "300px", height: "300px" }}
+      />
+    </div>
+  ) : formExpired ? (
+    <div className="size-full flex justify-center items-center fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto">
+      <div className="mt-7 opacity-100 duration-500  ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
+        <div className="relative flex flex-col bg-white shadow-lg rounded-xl dark:bg-neutral-900">
+          <div className="p-4 sm:p-10 text-center overflow-y-auto">
+            <span className="mb-4 inline-flex justify-center items-center size-[46px] rounded-full border-4 text-red-500 dark:bg-red-700 dark:border-red-400">
+              <svg
+                className=" shrink-0 size-10"
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 345.8 345.8"
+                enableBackground="new 0 0 345.8 345.8"
+                xmlSpace="preserve"
+                fill="#000000"
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  {" "}
+                  <g>
+                    {" "}
+                    <circle
+                      fill="none"
+                      stroke="#FFFFFF"
+                      strokeWidth="0.75"
+                      strokeMiterlimit="10"
+                      cx="172.9"
+                      cy="172.9"
+                      r="172.5"
+                    ></circle>{" "}
+                    <circle
+                      fill="#E1473F"
+                      cx="172.9"
+                      cy="172.9"
+                      r="172.5"
+                    ></circle>{" "}
+                    <circle
+                      fill="#FF5F57"
+                      cx="172.9"
+                      cy="172.9"
+                      r="157.5"
+                    ></circle>{" "}
+                    <g>
+                      {" "}
+                      <path
+                        fill="#752521"
+                        d="M160.4,80.4c5.7-5.3,12.4-8,20.1-8c7.8,0,14.5,2.7,20.1,8c5.6,5.3,8.3,11.7,8.3,19.3 c0,3.7-0.8,9.3-2.3,16.6c-1.6,7.4-3.3,14.9-5.1,22.6c-2.1,8.4-4.4,18.8-7,31.2c-2.6,12.4-5.4,27.9-8.3,46.6h-11.3 c-2.9-18.5-5.7-34-8.3-46.5c-2.6-12.5-5-23-7-31.4c-2.1-8.9-3.9-16.6-5.3-23.2c-1.4-6.6-2.1-11.9-2.1-15.9 C151.9,92.1,154.7,85.7,160.4,80.4z M160.6,242.2c5.6-5.4,12.2-8.1,19.7-8.1c7.6,0,14.2,2.7,19.8,8.1c5.6,5.4,8.4,11.8,8.4,19.3 c0,7.4-2.8,13.8-8.4,19.1c-5.6,5.3-12.2,8-19.8,8c-7.5,0-14.1-2.7-19.7-8c-5.6-5.3-8.4-11.7-8.4-19.1 C152.2,254.1,155,247.6,160.6,242.2z"
+                      ></path>{" "}
+                    </g>{" "}
+                    <g>
+                      {" "}
+                      <path
+                        fill="#FFFFFF"
+                        d="M152.9,72.8c5.7-5.3,12.4-8,20.1-8c7.8,0,14.5,2.7,20.1,8c5.6,5.3,8.3,11.7,8.3,19.3 c0,3.7-0.8,9.3-2.3,16.6c-1.6,7.4-3.3,14.9-5.1,22.6c-2.1,8.4-4.4,18.8-7,31.2c-2.6,12.4-5.4,27.9-8.3,46.6h-11.3 c-2.9-18.5-5.7-34-8.3-46.5c-2.6-12.5-5-23-7-31.4c-2.1-8.9-3.9-16.6-5.3-23.2c-1.4-6.6-2.1-11.9-2.1-15.9 C144.4,84.5,147.2,78.1,152.9,72.8z M153.1,234.6c5.6-5.4,12.2-8.1,19.7-8.1c7.6,0,14.2,2.7,19.8,8.1c5.6,5.4,8.4,11.8,8.4,19.3 c0,7.4-2.8,13.8-8.4,19.1c-5.6,5.3-12.2,8-19.8,8c-7.5,0-14.1-2.7-19.7-8c-5.6-5.3-8.4-11.7-8.4-19.1 C144.7,246.5,147.5,240,153.1,234.6z"
+                      ></path>{" "}
+                    </g>{" "}
+                  </g>{" "}
+                </g>
+              </svg>
+            </span>
+            <h3 className="mb-2 text-xl font-bold text-gray-800 dark:text-neutral-200">
+              Application stopped accepting responses
+            </h3>
+            <p className="text-gray-500 dark:text-neutral-500">
+              contact the admin
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   ) : submitted ? (
@@ -409,6 +482,26 @@ const roleForm = () => {
                 }
               />
             </div>
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="af-account-highest-degree"
+                className="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200"
+              >
+                Institution Name
+              </label>
+            </div>
+
+            <div className="sm:col-span-9">
+              <input
+                id="af-account-highest-degree"
+                type="text"
+                className="py-2 px-3 pe-11 block w-full border border-white shadow-sm -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg text-sm relative focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-500 dark:text-neutral-200 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                onChange={(e) =>
+                  setData({ ...data, highestDegreeOrg: e.target.value })
+                }
+              />
+            </div>
+
             <div className="sm:col-span-3">
               <label
                 htmlFor="af-account-highest-degree-cgpa"
