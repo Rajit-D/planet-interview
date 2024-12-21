@@ -15,6 +15,7 @@ const page = () => {
     (state) => state.fetchCandidateInfo
   );
   const rejectCandidate = useCandidateStore((state) => state.rejectCandidate);
+  const acceptCandidate=useCandidateStore((state)=>state.acceptCandidate)
   useEffect(() => {
     fetchCandidateInfo(pathNameArray[2], pathNameArray[3]);
   }, [fetchCandidateInfo]);
@@ -60,7 +61,7 @@ const page = () => {
           {candidate.selected === "pending" ? (
             <div className="flex space-x-2">
               <button
-                // onClick={handleAccept}
+                onClick={() => acceptCandidate(pathNameArray[3])}
                 className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-teal-100 text-teal-800 hover:bg-teal-200 focus:outline-none focus:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:text-teal-500 dark:bg-teal-800/30 dark:hover:bg-teal-800/20 dark:focus:bg-teal-800/20"
               >
                 <svg

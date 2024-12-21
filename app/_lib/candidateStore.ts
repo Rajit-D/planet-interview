@@ -34,6 +34,7 @@ interface CandidateStore {
   fetchCandidatesByRoleID: (id: string) => Promise<void>;
   fetchCandidateInfo: (roleid: string, candidateid: string) => Promise<void>;
   rejectCandidate: (candidateid: string) => Promise<void>;
+  acceptCandidate: (candidateid: string) => Promise<void>;
 }
 
 export const useCandidateStore = create<CandidateStore>((set) => ({
@@ -117,6 +118,34 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
       set((state) => ({
         candidate: { ...state.candidate, selected: "reject" },
       }));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  acceptCandidate: async (candidateid: string) => {
+    try {
+      const backendCookie = await getBackendCookie();
+      await axios.put(
+        `http://localhost:8080/selectCandidate?id=${candidateid}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${backendCookie}`,
+          },
+        }
+      );
+      set((state) => ({
+        candidates: state.candidates.map((candidate) =>
+          candidate.id === candidateid
+            ? { ...candidate, selected: "accept" }
+            : candidate
+        ),
+      }));
+      set((state) => ({
+        candidate: { ...state.candidate, selected: "accept" },
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   },
 }));
