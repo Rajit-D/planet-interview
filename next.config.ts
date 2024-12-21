@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "qjjltpmoudplzbqwjbvy.supabase.co",
       "images.unsplash.com",
       "example.com",
+      "png.pngtree.com"
     ],
   },
 };

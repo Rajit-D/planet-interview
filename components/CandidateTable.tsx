@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import CandidateRow from "./CandidateRow";
 import { useCandidateStore } from "@/app/_lib/candidateStore";
-import dynamic from "next/dynamic";
 
 const CandidateTable = ({ roleName, roleId }: any) => {
   const candidates = useCandidateStore((state) => state.candidates);
@@ -14,6 +13,7 @@ const CandidateTable = ({ roleName, roleId }: any) => {
   useEffect(() => {
     fetchCandidatesByRoleID(roleId);
   }, [fetchCandidatesByRoleID]);
+  useEffect(() => {}, [candidates]);
   return (
     <div className="w-[95%] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
       <div className="flex flex-col">
