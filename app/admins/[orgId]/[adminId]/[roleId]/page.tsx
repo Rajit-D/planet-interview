@@ -134,7 +134,7 @@ const page = () => {
                 <h3 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-gray-800 dark:text-neutral-200">
                   {
                     candidatesInfo.filter(
-                      (candidate: any) => candidate.selected === "accepted"
+                      (candidate: any) => candidate.selected === "accept"
                     ).length
                   }
                 </h3>

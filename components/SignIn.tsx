@@ -13,200 +13,185 @@ const SignIn = () => {
   const router = useRouter();
 
   return (
-    <div className="flex items-center justify-center flex-col h-screen border border-red-200">
-      <div className="max-w-md mx-auto mt-5 w-full border border-red-200 flex justify-center flex-col items-center">
-        <p className="text-[40px] font-poppins mb-6 text-center">
-          Sign in to your organisation
-        </p>
-
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="name"
-            name="org-name"
-            id="org-name"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=""
-            required
-            onChange={(e) => {
-              setOrgName(e.target.value);
-            }}
-          />
-          <label
-            htmlFor="org-name"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Name of the Organisation
-          </label>
-        </div>
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="email"
-            name="floating_email"
-            id="floating_email"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=""
-            required
-            onChange={(e) => {
-              setOrgEmail(e.target.value);
-            }}
-          />
-          <label
-            htmlFor="floating_email"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Email ID
-          </label>
-        </div>
-        <div className="relative z-0 w-full mb-5 group">
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="password"
-              name="floating_password"
-              id="floating_password"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-              onChange={(e) => {
-                setOrgPassword(e.target.value);
-              }}
-            />
-            <label
-              htmlFor="floating_password"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+    <div className="min-h-screen bg-[#191716] flex items-center justify-center p-4">
+      <div className="max-w-md w-full space-y-8 bg-[#212227]  p-8 rounded-xl shadow-xl border border-gray-700">
+        <div className="text-center">
+          <div className="flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-12 text-blue-400"
             >
-              Password
-            </label>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z"
+              />
+            </svg>
           </div>
+          <h2 className="mt-4 text-3xl font-bold text-white">Welcome Back</h2>
+          <p className="mt-2 text-sm text-gray-400">
+            Sign in to your organization account
+          </p>
         </div>
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={async () => {
-            const res = await signIn("credentials", {
-              name: orgName,
-              email: orgEmail,
-              password: orgPassword,
-              redirect: false,
-            });
-            if (res?.status === 200) {
-              await axios.get("http://localhost:3000/api/org").then((res) => {
-                const orgDetails = res.data.orgs.find(
-                  (org: { name: any }) => org.name === orgName
-                );
-                console.log(orgDetails);
-                router.push(`/admins/${orgDetails.id}`);
+        <div className="mt-8 space-y-6">
+          <div className="space-y-4">
+            <div>
+              <label
+                htmlFor="organization"
+                className="block text-sm font-medium text-gray-300"
+              >
+                Organization Name
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6 text-gray-500"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
+                    />
+                  </svg>
+                </div>
+                <input
+                  id="organization"
+                  name="organization"
+                  type="text"
+                  autoComplete="organization"
+                  required
+                  value={orgName}
+                  onChange={(e) => setOrgName(e.target.value)}
+                  className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
+                           placeholder-gray-500"
+                  placeholder="Your Organization"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-300"
+              >
+                Work Email
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6 text-gray-500"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                    />
+                  </svg>
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={orgEmail}
+                  onChange={(e) => setOrgEmail(e.target.value)}
+                  className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
+                           placeholder-gray-500"
+                  placeholder="you@organization.com"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-300"
+              >
+                Password
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6 tex-gray-500"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={orgPassword}
+                  onChange={(e) => setOrgPassword(e.target.value)}
+                  className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
+                           placeholder-gray-500"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+          </div>
+          <button
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium 
+            text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
+            focus:ring-blue-500 transition-colors focus:ring-offset-gray-800"
+            onClick={async () => {
+              const res = await signIn("credentials", {
+                name: orgName,
+                email: orgEmail,
+                password: orgPassword,
+                redirect: false,
               });
-            }
-          }}
-        >
-          Login
-        </button>
-      </div>
-
-      {/* <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
-          <div className="max-w-md mx-auto">
-            <div className="flex items-center space-x-5">
-              <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
-                i
-              </div>
-              <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
-                <h2 className="leading-relaxed">Create an Event</h2>
-                <p className="text-sm text-gray-500 font-normal leading-relaxed">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                </p>
-              </div>
-            </div>
-            <div className="divide-y divide-gray-200">
-              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <div className="flex flex-col">
-                  <label className="leading-loose">Event Title</label>
-                  <input
-                    type="text"
-                    className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                    placeholder="Event title"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label className="leading-loose">Event Subtitle</label>
-                  <input
-                    type="text"
-                    className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                    placeholder="Optional"
-                  />
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="flex flex-col">
-                    <label className="leading-loose">Start</label>
-                    <div className="relative focus-within:text-gray-600 text-gray-400">
-                      <input
-                        type="text"
-                        className="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                        placeholder="25/02/2020"
-                      />
-                      <div className="absolute left-3 top-2">
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <label className="leading-loose">End</label>
-                    <div className="relative focus-within:text-gray-600 text-gray-400">
-                      <input
-                        type="text"
-                        className="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                        placeholder="26/02/2020"
-                      />
-                      <div className="absolute left-3 top-2">
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <label className="leading-loose">Event Description</label>
-                  <input
-                    type="text"
-                    className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                    placeholder="Optional"
-                  />
-                </div>
-              </div>
-              <div className="pt-4 flex items-center space-x-4">
-                <button className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
-                  Create
-                </button>
-              </div>
-            </div>
-          </div>
+              if (res?.status === 200) {
+                await axios.get("http://localhost:3000/api/org").then((res) => {
+                  const orgDetails = res.data.orgs.find(
+                    (org: { name: any }) => org.name === orgName
+                  );
+                  console.log(orgDetails);
+                  router.push(`/admins/${orgDetails.id}`);
+                });
+              }
+            }}
+          >
+            Sign in to your Organisation
+          </button>
+          <p className="text-center text-sm text-gray-400">
+            Don't have an account?{" "}
+            <a
+              href="#"
+              className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              Create organization
+            </a>
+          </p>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
