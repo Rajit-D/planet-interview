@@ -184,7 +184,7 @@ const SignIn = () => {
           <p className="text-center text-sm text-gray-400">
             Don't have an account?{" "}
             <a
-              href="#"
+              href="/orgSignup"
               className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
             >
               Create organization
