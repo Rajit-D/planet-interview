@@ -16,7 +16,7 @@ interface Admin {
 
 const client = new PrismaClient();
 
-const Page = async ({ params }: { params: { orgId: string } }) => {
+const Page = async ({ params }: { params: Promise<{ orgId: string }> }) => {
   const { orgId } = await params;
   const org: OrgData | null = await client.organisations.findUnique({
     where: {
