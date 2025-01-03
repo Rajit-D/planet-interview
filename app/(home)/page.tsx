@@ -32,7 +32,7 @@ export default function Home() {
         const backendCookie = await getBackendCookie();
 
         if (!backendCookie || typeof backendCookie !== "string") {
-          console.error("Invalid or missing cookie");
+          console.log("Invalid or missing cookie");
           setLoading(false);
           return;
         }
@@ -46,9 +46,9 @@ export default function Home() {
         }
       } catch (error: any) {
         if (error.response) {
-          console.error("Error Response:", error.response.data);
+          console.log("Error Response:", error.response.data);
         } else {
-          console.error("Error:", error.message);
+          console.log("Error:", error.message);
         }
       } finally {
         setLoading(false);
