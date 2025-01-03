@@ -37,7 +37,7 @@ export const useRoleStore = create<RoleStore>((set) => ({
   fetchRoles: async () => {
     try {
       const backendCookie = await getBackendCookie();
-      const res = await axios.get("http://localhost:8080/allJobRole", {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_PATH}/allJobRole`, {
         headers: {
           Authorization: `Bearer ${backendCookie}`,
         },
@@ -51,7 +51,7 @@ export const useRoleStore = create<RoleStore>((set) => ({
     try {
       const backendCookie = await getBackendCookie();
       const res = await axios.post(
-        "http://localhost:8080/addJobRole",
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/addJobRole`,
         {
           id: newRole.id,
           name: newRole.name,
@@ -79,7 +79,7 @@ export const useRoleStore = create<RoleStore>((set) => ({
   deleteRole: async (roleId: string) => {
     try {
       const backendCookie = await getBackendCookie();
-      await axios.delete(`http://localhost:8080/deleteJobRole?id=${roleId}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_PATH}/deleteJobRole?id=${roleId}`, {
         headers: {
           Authorization: `Bearer ${backendCookie}`,
         },
@@ -97,7 +97,7 @@ export const useRoleStore = create<RoleStore>((set) => ({
     try {
       const backendCookie = await getBackendCookie();
       const updated = await axios.put(
-        "http://localhost:8080/updateJobRole",
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/updateJobRole`,
         {
           id: updatedRole.id,
           name: updatedRole.name,
@@ -128,7 +128,7 @@ export const useRoleStore = create<RoleStore>((set) => ({
     try {
       const backendCookie = await getBackendCookie();
       await axios.put(
-        `http://localhost:8080/expireJobRole?id=${roleId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/expireJobRole?id=${roleId}`,
         {},
         {
           headers: {

@@ -68,7 +68,7 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
     try {
       const backendCookie = await getBackendCookie();
       const data = await axios.get(
-        `http://localhost:8080/allCandidate?id=${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/allCandidate?id=${id}`,
         {
           headers: {
             Authorization: `Bearer ${backendCookie}`,
@@ -84,7 +84,7 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
     try {
       const backendCookie = await getBackendCookie();
       const data: AxiosResponse<any, any> = await axios.get(
-        `http://localhost:8080/singleCandidate?candidateId=${candidateid}&roleId=${roleid}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/singleCandidate?candidateId=${candidateid}&roleId=${roleid}`,
         {
           headers: {
             Authorization: `Bearer ${backendCookie}`,
@@ -100,7 +100,7 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
     try {
       const backendCookie = await getBackendCookie();
       await axios.put(
-        `http://localhost:8080/rejectCandidate?id=${candidateid}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/rejectCandidate?id=${candidateid}`,
         {},
         {
           headers: {
@@ -126,7 +126,7 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
     try {
       const backendCookie = await getBackendCookie();
       await axios.put(
-        `http://localhost:8080/selectCandidate?id=${candidateid}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/selectCandidate?id=${candidateid}`,
         {},
         {
           headers: {

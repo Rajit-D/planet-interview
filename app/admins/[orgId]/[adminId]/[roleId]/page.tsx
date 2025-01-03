@@ -30,7 +30,7 @@ const page = () => {
     const fetchInfo = async () => {
       const backendCookie = await getBackendCookie();
       const roleData: any = await axios.get(
-        `http://localhost:8080/singleJobRole?id=${
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/singleJobRole?id=${
           pathnameArray[pathnameArray.length - 1]
         }`,
         {
@@ -41,7 +41,7 @@ const page = () => {
       );
       setRoleInfo(roleData.data);
       const candidateList: any = await axios.get(
-        `http://localhost:8080/allCandidate?id=${
+        `${process.env.NEXT_PUBLIC_BACKEND_PATH}/allCandidate?id=${
           pathnameArray[pathnameArray.length - 1]
         }`,
         {

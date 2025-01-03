@@ -75,7 +75,7 @@ const roleForm = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/formJobData?id=${roleId}`
+          `${process.env.NEXT_PUBLIC_BACKEND_PATH}/formJobData?id=${roleId}`
         );
         setRoleData(res.data);
         if (res.data.expired) {
@@ -105,7 +105,7 @@ const roleForm = () => {
       return;
     }
     try {
-      await axios.post("http://localhost:8080/submitForm", uploadData);
+      await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_PATH}/submitForm`, uploadData);
     } catch (error) {
       window.alert(error);
       return;
